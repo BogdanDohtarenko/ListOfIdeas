@@ -5,5 +5,4 @@ data class IdeaItem(
     var ideaName: String,
     var count: Int,
     var isEnabled: Boolean
-
 )
