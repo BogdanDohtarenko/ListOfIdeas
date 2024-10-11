@@ -7,7 +7,13 @@ object IdeaListRepositoryImpl: IdeaListRepository {
 
     private val ideaList = mutableListOf<IdeaItem>()
 
+    private var autoIncrementId = 0
+
     override fun addIdeaItem(ideaItem: IdeaItem) {
+
+        if(ideaItem.id == IdeaItem.UNDEFINED_ID)
+            ideaItem.id = autoIncrementId++
+
         ideaList.add(ideaItem)
     }
 
