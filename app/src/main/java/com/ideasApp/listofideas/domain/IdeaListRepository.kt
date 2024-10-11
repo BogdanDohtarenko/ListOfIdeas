@@ -1,6 +1,6 @@
 package com.ideasApp.listofideas.domain
 
-interface ItemListRepository {
+interface IdeaListRepository {
 
     fun addIdeaItem(ideaItem: IdeaItem)
 

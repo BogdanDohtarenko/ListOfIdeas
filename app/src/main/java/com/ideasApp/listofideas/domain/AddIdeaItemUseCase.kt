@@ -1,9 +1,9 @@
 package com.ideasApp.listofideas.domain
 
 class AddIdeaItemUseCase(
-    private val itemListRepository: ItemListRepository
+    private val ideaListRepository: IdeaListRepository
 ) {
     fun addIdeaItem(ideaItem: IdeaItem) {
-        itemListRepository.addIdeaItem(ideaItem)
+        ideaListRepository.addIdeaItem(ideaItem)
     }
 }
