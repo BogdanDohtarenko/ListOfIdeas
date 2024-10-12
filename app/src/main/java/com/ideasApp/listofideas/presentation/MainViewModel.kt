@@ -10,17 +10,21 @@ import com.ideasApp.listofideas.domain.IdeaItem
 
 class MainViewModel: ViewModel() {
 
-    var repository = IdeaListRepositoryImpl
+    private var repository = IdeaListRepositoryImpl
 
-    val getIdeasListUseCase = GetIdeasListUseCase(repository)
-    val deleteIdeaItemUseCase  = DeleteIdeaItemUseCase(repository)
-    val editIdeaItemUseCase = EditIdeaItemUseCase(repository)
+    private val getIdeasListUseCase = GetIdeasListUseCase(repository)
+    private val deleteIdeaItemUseCase  = DeleteIdeaItemUseCase(repository)
+    private val editIdeaItemUseCase = EditIdeaItemUseCase(repository)
 
-    val ideaList = MutableLiveData<List<IdeaItem>>()
+    val ideaList =  getIdeasListUseCase.getIdeasList()
 
-    fun getIdeaList() {
-        val list = getIdeasListUseCase.getIdeasList()
-        ideaList.value = list
+    fun deleteIdeaItem(ideaItem: IdeaItem) {
+        deleteIdeaItemUseCase.deleteIdeaItem(ideaItem)
+    }
+
+    fun changeEnableState(ideaItem: IdeaItem) {
+        val newItem = ideaItem.copy(isEnabled = !ideaItem.isEnabled)
+        editIdeaItemUseCase.editIdeaItem(newItem)
     }
 
 }

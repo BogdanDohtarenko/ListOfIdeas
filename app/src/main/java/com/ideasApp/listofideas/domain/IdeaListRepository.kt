@@ -1,5 +1,8 @@
 package com.ideasApp.listofideas.domain
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+
 interface IdeaListRepository {
 
     fun addIdeaItem(ideaItem: IdeaItem)
@@ -10,5 +13,5 @@ interface IdeaListRepository {
 
     fun getIdeaItem(ideaItemId: Int):IdeaItem
 
-    fun getIdeasList(): List<IdeaItem>
+    fun getIdeasList(): LiveData<List<IdeaItem>>
 }
