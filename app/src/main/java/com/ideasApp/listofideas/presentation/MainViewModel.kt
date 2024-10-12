@@ -16,22 +16,15 @@ class MainViewModel: ViewModel() {
     private val deleteIdeaItemUseCase  = DeleteIdeaItemUseCase(repository)
     private val editIdeaItemUseCase = EditIdeaItemUseCase(repository)
 
-    val ideaList = MutableLiveData<List<IdeaItem>>()
-
-    fun getIdeaList() {
-        val list = getIdeasListUseCase.getIdeasList()
-        ideaList.value = list
-    }
+    val ideaList =  getIdeasListUseCase.getIdeasList()
 
     fun deleteIdeaItem(ideaItem: IdeaItem) {
         deleteIdeaItemUseCase.deleteIdeaItem(ideaItem)
-        getIdeaList()
     }
 
     fun changeEnableState(ideaItem: IdeaItem) {
         val newItem = ideaItem.copy(isEnabled = !ideaItem.isEnabled)
         editIdeaItemUseCase.editIdeaItem(newItem)
-        getIdeaList()
     }
 
 }

@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.getIdeaList()
         viewModel.ideaList.observe(this) {
             Log.d("MainActivity", it.toString())
         }
