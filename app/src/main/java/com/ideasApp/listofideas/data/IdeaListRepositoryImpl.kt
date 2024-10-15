@@ -11,6 +11,14 @@ object IdeaListRepositoryImpl: IdeaListRepository {
     private val idealistLiveData = MutableLiveData<List<IdeaItem>>()
     private var autoIncrementId = 0
 
+    init {
+        for (i in 0 until 100) {
+            val item = IdeaItem("Name $i", i, true)
+            addIdeaItem(item)
+        }
+
+    }
+
     private fun updateList() {
         idealistLiveData.value = ideaList.toList()
     }
