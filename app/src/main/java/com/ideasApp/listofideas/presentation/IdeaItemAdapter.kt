@@ -10,7 +10,11 @@ import com.ideasApp.listofideas.domain.IdeaItem
 
 class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>() {
 
-    private val list = listOf<IdeaItem>()
+    var ideaList = listOf<IdeaItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IdeaItemViewHolder {
 //        val layoutId = if (ideaItem.isEnabled == false) {
@@ -18,12 +22,16 @@ class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>(
 //        } else {
 //            R.layout.item_idea_enabled
 //        }
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_idea_disabled, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.item_idea_disabled,
+            parent,
+            false
+        )
         return IdeaItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: IdeaItemViewHolder, position: Int) {
-        val ideaItem = list[position]
+        val ideaItem = ideaList[position]
         holder.tvName.text = ideaItem.ideaName
         holder.tvCount.text = ideaItem.count.toString()
         holder.view.setOnLongClickListener {
@@ -32,7 +40,7 @@ class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>(
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return ideaList.size
     }
 
     class IdeaItemViewHolder(val view: View): RecyclerView.ViewHolder(view) {
