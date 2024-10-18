@@ -4,19 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ideasApp.listofideas.domain.IdeaItem
 import com.ideasApp.listofideas.domain.IdeaListRepository
+import kotlin.random.Random
 
 object IdeaListRepositoryImpl: IdeaListRepository {
 
-    private val ideaList = mutableListOf<IdeaItem>()
+    private val ideaList = sortedSetOf<IdeaItem>({p0, p1 -> p0.id.compareTo(p1.id) })
     private val idealistLiveData = MutableLiveData<List<IdeaItem>>()
     private var autoIncrementId = 0
 
     init {
         for (i in 0 until 100) {
-            val item = IdeaItem("Name $i", i, true)
+            val item = IdeaItem("Name $i", i, Random.nextBoolean())
             addIdeaItem(item)
         }
-
     }
 
     private fun updateList() {
@@ -24,7 +24,6 @@ object IdeaListRepositoryImpl: IdeaListRepository {
     }
 
     override fun addIdeaItem(ideaItem: IdeaItem) {
-
         if(ideaItem.id == IdeaItem.UNDEFINED_ID)
             ideaItem.id = autoIncrementId++
 
@@ -46,7 +45,7 @@ object IdeaListRepositoryImpl: IdeaListRepository {
     override fun getIdeaItem(ideaItemId: Int): IdeaItem {
         return ideaList.find {
             it.id == ideaItemId
-        } ?: throw RuntimeException("ELement with id $ideaItemId not found")
+        } ?: throw RuntimeException("EElement with id $ideaItemId not found")
     }
 
     override fun getIdeasList(): LiveData<List<IdeaItem>> {

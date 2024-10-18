@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.ideasApp.listofideas.R
+import com.ideasApp.listofideas.domain.IdeaItem
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var adapter: IdeaItemAdapter
+    private lateinit var ideaItemAdapter: IdeaItemAdapter
 
     private var count = 0
 
@@ -21,15 +22,30 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.ideaList.observe(this) {
-            adapter.ideaList = it
+            ideaItemAdapter.ideaList = it
         }
 
     }
 
     private fun setupRecyclerView() {
         val rvIdeaList = findViewById<RecyclerView>(R.id.rv_idea_list)
-        adapter = IdeaItemAdapter()
-        rvIdeaList.adapter = adapter
+        with(rvIdeaList) {
+            ideaItemAdapter = IdeaItemAdapter()
+            adapter = ideaItemAdapter
+            recycledViewPool.setMaxRecycledViews(
+                IdeaItemAdapter.VIEW_TYPE_ENABLED,
+                IdeaItemAdapter.MAX_POOL_SIZE
+            )
+            recycledViewPool.setMaxRecycledViews(
+                IdeaItemAdapter.VIEW_TYPE_DISABLED,
+                IdeaItemAdapter.MAX_POOL_SIZE
+            )
+        }
+        ideaItemAdapter.onIdeaItemLongClickListener = object : IdeaItemAdapter.OnIdeaItemLongClickListener {
+            override fun onIdeaItemClick(ideaItem: IdeaItem) {
+                viewModel.changeEnableState(ideaItem)
+            }
+        }
     }
 
 
