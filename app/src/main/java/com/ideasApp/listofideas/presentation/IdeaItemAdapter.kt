@@ -16,13 +16,9 @@ class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>(
         const val MAX_POOL_SIZE = 10
     }
 
-    interface OnIdeaItemLongClickListener {
 
-        fun onIdeaItemClick(ideaItem: IdeaItem)
-
-    }
-
-    var onIdeaItemLongClickListener: OnIdeaItemLongClickListener? = null
+    var onIdeaItemLongClickListener: ((IdeaItem) -> Unit)? = null
+    var onIdeaItemClickListener: ((IdeaItem) -> Unit)? = null
 
 
     var ideaList = listOf<IdeaItem>()
@@ -53,8 +49,11 @@ class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>(
         holder.tvName.text = ideaItem.ideaName
         holder.tvCount.text = ideaItem.count.toString()
         holder.view.setOnLongClickListener {
-            onIdeaItemLongClickListener?.onIdeaItemClick(ideaItem)
+            onIdeaItemLongClickListener?.invoke(ideaItem)
             true
+        }
+        holder.view.setOnClickListener {
+            onIdeaItemClickListener?.invoke(ideaItem)
         }
     }
 
