@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
@@ -23,8 +24,10 @@ class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>(
 
     var ideaList = listOf<IdeaItem>()
         set(value) {
+            val callback = IdeaItemDiffCallback(ideaList, value)
+            val diffUtil = DiffUtil.calculateDiff(callback)
+            diffUtil.dispatchUpdatesTo(this)
             field = value
-            notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IdeaItemViewHolder {
