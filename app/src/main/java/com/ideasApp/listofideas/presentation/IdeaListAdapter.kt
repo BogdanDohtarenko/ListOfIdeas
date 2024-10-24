@@ -1,15 +1,12 @@
 package com.ideasApp.listofideas.presentation
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
 
-class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>() {
+class IdeaListAdapter: ListAdapter<IdeaItem, IdeaItemViewHolder>(IdeaItemDiffItemCallback()) {
 
     companion object {
         const val VIEW_TYPE_ENABLED = 0
@@ -22,14 +19,6 @@ class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>(
     var onIdeaItemClickListener: ((IdeaItem) -> Unit)? = null
 
 
-    var ideaList = listOf<IdeaItem>()
-        set(value) {
-            val callback = IdeaItemDiffCallback(ideaList, value)
-            val diffUtil = DiffUtil.calculateDiff(callback)
-            diffUtil.dispatchUpdatesTo(this)
-            field = value
-        }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IdeaItemViewHolder {
         val viewId = when(viewType) {
             VIEW_TYPE_ENABLED -> R.layout.item_idea_enabled
@@ -41,14 +30,14 @@ class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (ideaList[position].isEnabled)
+        return if (getItem(position).isEnabled)
             VIEW_TYPE_ENABLED
             else
             VIEW_TYPE_DISABLED
     }
 
     override fun onBindViewHolder(holder: IdeaItemViewHolder, position: Int) {
-        val ideaItem = ideaList[position]
+        val ideaItem = getItem(position)
         holder.tvName.text = ideaItem.ideaName
         holder.tvCount.text = ideaItem.count.toString()
         holder.view.setOnLongClickListener {
@@ -60,14 +49,6 @@ class IdeaItemAdapter: RecyclerView.Adapter<IdeaItemAdapter.IdeaItemViewHolder>(
         }
     }
 
-    override fun getItemCount(): Int {
-        return ideaList.size
-    }
-
-    class IdeaItemViewHolder(val view: View): RecyclerView.ViewHolder(view) {
-        val tvName: TextView = view.findViewById(R.id.tv_name)
-        val tvCount: TextView = view.findViewById(R.id.tv_count)
-    }
 
 
 }
