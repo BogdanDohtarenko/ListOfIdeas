@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ListOfIdeas"
         tools:targetApi="31">
+
+        <activity android:name=".presentation.IdeaItemActivity"
+            android:windowSoftInputMode="adjustResize"/>
+
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true">

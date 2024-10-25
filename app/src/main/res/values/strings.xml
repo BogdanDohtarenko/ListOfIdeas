@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">ListOfIdeas</string>
     <string name="add_new_idea_item">Add new shop item</string>
+
+    <string name="edit_name_hint">Name: </string>
+    <string name="edit_description_hint">Description: </string>
+    <string name="save_button">Save</string>
 </resources>
