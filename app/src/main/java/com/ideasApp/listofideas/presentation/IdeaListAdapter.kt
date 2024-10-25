@@ -14,10 +14,8 @@ class IdeaListAdapter: ListAdapter<IdeaItem, IdeaItemViewHolder>(IdeaItemDiffIte
         const val MAX_POOL_SIZE = 10
     }
 
-
     var onIdeaItemLongClickListener: ((IdeaItem) -> Unit)? = null
     var onIdeaItemClickListener: ((IdeaItem) -> Unit)? = null
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IdeaItemViewHolder {
         val viewId = when(viewType) {
@@ -39,7 +37,7 @@ class IdeaListAdapter: ListAdapter<IdeaItem, IdeaItemViewHolder>(IdeaItemDiffIte
     override fun onBindViewHolder(holder: IdeaItemViewHolder, position: Int) {
         val ideaItem = getItem(position)
         holder.tvName.text = ideaItem.ideaName
-        holder.tvCount.text = ideaItem.count.toString()
+        holder.tvDescription.text = ideaItem.description
         holder.view.setOnLongClickListener {
             onIdeaItemLongClickListener?.invoke(ideaItem)
             true

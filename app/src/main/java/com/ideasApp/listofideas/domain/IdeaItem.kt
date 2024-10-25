@@ -2,9 +2,9 @@ package com.ideasApp.listofideas.domain
 
 data class IdeaItem(
 
-    var ideaName: String,
-    var count: Int,
-    var isEnabled: Boolean,
+    var ideaName: String ,
+    var description: String ,
+    var isEnabled: Boolean ,
     var id: Int = UNDEFINED_ID
 
 ) {

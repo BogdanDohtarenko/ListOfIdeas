@@ -7,5 +7,5 @@ import com.ideasApp.listofideas.R
 
 class IdeaItemViewHolder(val view: View): RecyclerView.ViewHolder(view) {
     val tvName: TextView = view.findViewById(R.id.tv_name)
-    val tvCount: TextView = view.findViewById(R.id.tv_count)
+    val tvDescription: TextView = view.findViewById(R.id.tv_description)
 }

@@ -14,7 +14,7 @@ object IdeaListRepositoryImpl: IdeaListRepository {
 
     init {
         for (i in 0 until 100) {
-            val item = IdeaItem("Name $i", i, Random.nextBoolean())
+            val item = IdeaItem("Name $i", "$i", Random.nextBoolean())
             addIdeaItem(item)
         }
     }
