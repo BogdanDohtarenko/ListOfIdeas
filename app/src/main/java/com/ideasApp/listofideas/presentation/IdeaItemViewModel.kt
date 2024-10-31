@@ -1,5 +1,7 @@
 package com.ideasApp.listofideas.presentation
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ideasApp.listofideas.data.IdeaListRepositoryImpl
 import com.ideasApp.listofideas.domain.AddIdeaItemUseCase
@@ -15,8 +17,25 @@ class IdeaItemViewModel: ViewModel() {
     private val addIdeaItemUseCase = AddIdeaItemUseCase(repository)
     private val editIdeaItemUseCase = EditIdeaItemUseCase(repository)
 
+    private val _errorInputName = MutableLiveData<Boolean>()
+    val errorInputName: LiveData<Boolean>
+        get() = _errorInputName
+
+    private val _errorInputDescription = MutableLiveData<Boolean>()
+    val errorInputDescription: LiveData<Boolean>
+        get() = _errorInputDescription
+
+    private val _ideaItem = MutableLiveData<IdeaItem>()
+    val ideaItem: LiveData<IdeaItem>
+        get() = _ideaItem
+
+    private val _closeScreenEnabled = MutableLiveData<Unit>()
+    val exitEnabled: LiveData<Unit>
+        get() = _closeScreenEnabled
+
+
     fun getIdeaItemUseCase(id: Int) {
-        val item = getIdeaItemUseCase.getIdeaItem(id)
+        _ideaItem.value = getIdeaItemUseCase.getIdeaItem(id)
     }
 
     fun addIdeaItem(inputName: String?, inputDescription: String?) {
@@ -26,6 +45,7 @@ class IdeaItemViewModel: ViewModel() {
         if (inputValid) {
             val ideaItem = IdeaItem(name , description , true)
             addIdeaItemUseCase.addIdeaItem(ideaItem)
+            finishWork()
         }
     }
 
@@ -33,9 +53,13 @@ class IdeaItemViewModel: ViewModel() {
         val name = parseName(inputName)
         val description = parseName(inputDescription)
         val inputValid = validateInput(name, description)
+
         if (inputValid) {
-            val ideaItem = IdeaItem(name, description, true)
-            editIdeaItemUseCase.editIdeaItem(ideaItem)
+            _ideaItem.value?.let {
+                val item = it.copy(ideaName = name, description = description)
+                editIdeaItemUseCase.editIdeaItem(item)
+                finishWork()
+            }
         }
     }
 
@@ -43,17 +67,28 @@ class IdeaItemViewModel: ViewModel() {
         return inputName?.trim() ?: ""
     }
 
-
     private fun validateInput(name: String, description: String): Boolean {
         var result = true
         if (name.isBlank()) {
-            // TODO show error input name
+            _errorInputName.value = true
             result = false
         }
         else if (description.isBlank()) {
-            // TODO show error description name
+            _errorInputDescription.value = true
             result = false
         }
         return result
+    }
+
+    private fun finishWork() {
+        _closeScreenEnabled.value = Unit
+    }
+
+    public fun resetErrorInputName() {
+        _errorInputName.value = false
+    }
+
+    public fun resetErrorInputDescription() {
+        _errorInputDescription.value = false
     }
 }
