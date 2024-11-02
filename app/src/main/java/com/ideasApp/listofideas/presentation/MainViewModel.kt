@@ -16,7 +16,7 @@ class MainViewModel: ViewModel() {
     private val deleteIdeaItemUseCase  = DeleteIdeaItemUseCase(repository)
     private val editIdeaItemUseCase = EditIdeaItemUseCase(repository)
 
-    val ideaList =  getIdeasListUseCase.getIdeasList()
+    val ideaList = getIdeasListUseCase.getIdeasList()
 
     fun deleteIdeaItem(ideaItem: IdeaItem) {
         deleteIdeaItemUseCase.deleteIdeaItem(ideaItem)

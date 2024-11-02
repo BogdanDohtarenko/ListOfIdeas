@@ -29,9 +29,9 @@ class IdeaItemViewModel: ViewModel() {
     val ideaItem: LiveData<IdeaItem>
         get() = _ideaItem
 
-    private val _closeScreenEnabled = MutableLiveData<Unit>()
+    private val _exitEnabled = MutableLiveData<Unit>()
     val exitEnabled: LiveData<Unit>
-        get() = _closeScreenEnabled
+        get() = _exitEnabled
 
 
     fun getIdeaItemUseCase(id: Int) {
@@ -81,7 +81,7 @@ class IdeaItemViewModel: ViewModel() {
     }
 
     private fun finishWork() {
-        _closeScreenEnabled.value = Unit
+        _exitEnabled.value = Unit
     }
 
     public fun resetErrorInputName() {

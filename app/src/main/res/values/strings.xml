@@ -5,4 +5,7 @@
     <string name="edit_name_hint">Name: </string>
     <string name="edit_description_hint">Description: </string>
     <string name="save_button">Save</string>
+
+    <string name="error_input_text">Enter smth</string>
+    <string name="error_input_description">Enter smth</string>
 </resources>
