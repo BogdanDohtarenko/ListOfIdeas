@@ -1,11 +1,11 @@
 package com.ideasApp.listofideas.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
 
@@ -14,20 +14,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var ideaListAdapter: IdeaListAdapter
 
-    private var count = 0
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setupRecyclerView()
-
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.ideaList.observe(this) {
             ideaListAdapter.submitList(it)
         }
 
+        val addIdeaItemButton = findViewById<FloatingActionButton>(R.id.button_add_idea_item)
+        addIdeaItemButton.setOnClickListener {
+            val intent = IdeaItemActivity.newIntentAddItem(this)
+            startActivity(intent)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -36,11 +37,11 @@ class MainActivity : AppCompatActivity() {
             ideaListAdapter = IdeaListAdapter()
             adapter = ideaListAdapter
             recycledViewPool.setMaxRecycledViews(
-                IdeaListAdapter.VIEW_TYPE_ENABLED,
+                IdeaListAdapter.VIEW_TYPE_ENABLED ,
                 IdeaListAdapter.MAX_POOL_SIZE
             )
             recycledViewPool.setMaxRecycledViews(
-                IdeaListAdapter.VIEW_TYPE_DISABLED,
+                IdeaListAdapter.VIEW_TYPE_DISABLED ,
                 IdeaListAdapter.MAX_POOL_SIZE
             )
         }
@@ -73,8 +74,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpOnClickListener() {
-        ideaListAdapter.onIdeaItemClickListener = { ideaItem: IdeaItem ->
-            Log.d("MainActivity" , "Clicked on ${ideaItem.id} item")
+        ideaListAdapter.onIdeaItemClickListener = {
+            val intent = IdeaItemActivity.newIntentEditItem(this , it.id)
+            startActivity(intent)
         }
     }
 
