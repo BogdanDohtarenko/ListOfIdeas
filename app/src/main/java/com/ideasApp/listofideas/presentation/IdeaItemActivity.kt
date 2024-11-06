@@ -15,7 +15,7 @@ import com.ideasApp.listofideas.domain.IdeaItem
 
 class IdeaItemActivity: AppCompatActivity() {
 
-    private lateinit var viewModel: IdeaItemViewModel
+   /* private lateinit var viewModel: IdeaItemViewModel
 
     private lateinit var inputLayoutName: TextInputLayout
     private lateinit var editTextName: TextInputEditText
@@ -24,20 +24,21 @@ class IdeaItemActivity: AppCompatActivity() {
     private lateinit var saveButton: Button
 
     private var screenMode = UNDEFINED_SCREEN_MODE
-    private var ideaItemId = IdeaItem.UNDEFINED_ID
+    private var ideaItemId = IdeaItem.UNDEFINED_ID*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        parseIntent()
-        viewModel = ViewModelProvider(this)[IdeaItemViewModel::class.java]
         setContentView(R.layout.activity_idea_item)
+        /*parseIntent()
+        viewModel = ViewModelProvider(this)[IdeaItemViewModel::class.java]
+
         initViews()
         addTextListeners()
         launchAppropriateMode()
-        addObservers()
+        addObservers()*/
     }
 
-    private fun launchAppropriateMode() {
+   /* private fun launchAppropriateMode() {
        when(screenMode) {
            MODE_EDIT -> launchEditMode()
            MODE_ADD -> launchAddMode()
@@ -142,7 +143,7 @@ class IdeaItemActivity: AppCompatActivity() {
         editTextDescription = findViewById(R.id.edit_text_description)
         saveButton = findViewById(R.id.save_button)
     }
-
+*/
     companion object {
         private const val EXTRA_SCREEN_MODE = "extra_mode"
         private const val EXTRA_ITEM_ID = "item_id"
