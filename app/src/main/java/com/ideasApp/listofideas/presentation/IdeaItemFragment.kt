@@ -16,7 +16,10 @@ import com.google.android.material.textfield.TextInputLayout
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
 
-class IdeaItemFragment: Fragment() {
+class IdeaItemFragment(
+    private val screenMode: String,
+    private val ideaItemId: Int = IdeaItem.UNDEFINED_ID
+): Fragment() {
 
     private lateinit var viewModel: IdeaItemViewModel
 
@@ -25,9 +28,6 @@ class IdeaItemFragment: Fragment() {
     private lateinit var inputLayoutDescription: TextInputLayout
     private lateinit var editTextDescription: TextInputEditText
     private lateinit var saveButton: Button
-
-    private var screenMode = UNDEFINED_SCREEN_MODE
-    private var ideaItemId = IdeaItem.UNDEFINED_ID
 
     override fun onCreateView(
         inflater: LayoutInflater ,
@@ -39,9 +39,9 @@ class IdeaItemFragment: Fragment() {
 
     override fun onViewCreated(view: View , savedInstanceState: Bundle?) {
         super.onViewCreated(view , savedInstanceState)
-        parseIntent()
+        parseParams()
         viewModel = ViewModelProvider(this)[IdeaItemViewModel::class.java]
-        initViews()
+        initViews(view)
         addTextListeners()
         launchAppropriateMode()
         addObservers()
@@ -108,7 +108,7 @@ class IdeaItemFragment: Fragment() {
             inputLayoutDescription.error = message
         }
         viewModel.exitEnabled.observe(viewLifecycleOwner) {
-            activity?.onBackPressed()
+            activity?.onBackPressedDispatcher?.onBackPressed()
         }
     }
 
@@ -129,20 +129,12 @@ class IdeaItemFragment: Fragment() {
          }
      }
 
-     private fun parseIntent() {
-         if(!intent.hasExtra(EXTRA_SCREEN_MODE)) {
-             throw RuntimeException("Param screen mode is absent")
+     private fun parseParams() {
+         if(screenMode != MODE_ADD && screenMode != MODE_EDIT) {
+             throw RuntimeException("Unknown screen mode $screenMode")
          }
-         val mode = intent.getStringExtra(EXTRA_SCREEN_MODE)
-         if(mode != MODE_ADD && mode != MODE_EDIT) {
-             throw RuntimeException("Unknown screen mode $mode")
-         }
-         screenMode = mode
-         if (screenMode == MODE_EDIT) {
-             if (!intent.hasExtra(EXTRA_ITEM_ID)) {
-                 throw RuntimeException("Param ideaItemId is absent")
-             }
-             ideaItemId = intent.getIntExtra(EXTRA_ITEM_ID, IdeaItem.UNDEFINED_ID)
+         if (screenMode == MODE_EDIT && ideaItemId == IdeaItem.UNDEFINED_ID) {
+             throw RuntimeException("Param ideaItemId is absent")
          }
      }
 
@@ -161,6 +153,15 @@ class IdeaItemFragment: Fragment() {
         private const val MODE_EDIT = "mode_edit"
 
         private const val UNDEFINED_SCREEN_MODE = ""
+
+        fun newInstanceEditItem(id: Int) : IdeaItemFragment {
+            return IdeaItemFragment(MODE_EDIT, id)
+        }
+
+        fun newInstanceAddItem() : IdeaItemFragment {
+            return IdeaItemFragment(MODE_ADD)
+        }
+
 
         fun newIntentAddItem(context: Context): Intent {
             val intent = Intent(context, IdeaItemActivity::class.java)
