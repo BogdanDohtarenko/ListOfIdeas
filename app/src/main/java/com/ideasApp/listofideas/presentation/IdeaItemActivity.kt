@@ -15,107 +15,15 @@ import com.ideasApp.listofideas.domain.IdeaItem
 
 class IdeaItemActivity: AppCompatActivity() {
 
-    private lateinit var viewModel: IdeaItemViewModel
-
-    private lateinit var inputLayoutName: TextInputLayout
-    private lateinit var editTextName: TextInputEditText
-    private lateinit var inputLayoutDescription: TextInputLayout
-    private lateinit var editTextDescription: TextInputEditText
-    private lateinit var saveButton: Button
 
     private var screenMode = UNDEFINED_SCREEN_MODE
     private var ideaItemId = IdeaItem.UNDEFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        parseIntent()
-        viewModel = ViewModelProvider(this)[IdeaItemViewModel::class.java]
         setContentView(R.layout.activity_idea_item)
-        initViews()
-        addTextListeners()
+        parseIntent()
         launchAppropriateMode()
-        addObservers()
-    }
-
-    private fun launchAppropriateMode() {
-       when(screenMode) {
-           MODE_EDIT -> launchEditMode()
-           MODE_ADD -> launchAddMode()
-       }
-    }
-
-    private fun addTextListeners() {
-        editTextName.addTextChangedListener(object: TextWatcher{
-            override fun beforeTextChanged(
-                s: CharSequence? ,
-                start: Int ,
-                count: Int ,
-                after: Int
-            ) {
-
-            }
-            override fun onTextChanged(s: CharSequence? , start: Int , before: Int , count: Int) {
-                viewModel.resetErrorInputName()
-            }
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-        })
-        editTextDescription.addTextChangedListener(object: TextWatcher{
-            override fun beforeTextChanged(
-                s: CharSequence? ,
-                start: Int ,
-                count: Int ,
-                after: Int
-            ) {
-
-            }
-            override fun onTextChanged(s: CharSequence? , start: Int , before: Int , count: Int) {
-                viewModel.resetErrorInputDescription()
-            }
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-        })
-    }
-
-    private fun addObservers() {
-        viewModel.errorInputName.observe(this) {
-            val message = if (it) {
-                getString(R.string.error_input_text)
-            } else {
-                null
-            }
-            inputLayoutName.error = message
-        }
-        viewModel.errorInputDescription.observe(this) {
-            val message = if (it) {
-                getString(R.string.error_input_description)
-            } else {
-                null
-            }
-            inputLayoutDescription.error = message
-        }
-        viewModel.exitEnabled.observe(this) {
-            finish()
-        }
-    }
-
-    private fun launchEditMode() {
-        viewModel.getIdeaItemUseCase(ideaItemId)
-        viewModel.ideaItem.observe(this) {
-            editTextName.setText(it.ideaName)
-            editTextDescription.setText(it.description)
-        }
-        saveButton.setOnClickListener {
-            viewModel.editIdeaItem(editTextName.text?.toString(), editTextDescription.text?.toString())
-        }
-    }
-
-    private fun launchAddMode() {
-        saveButton.setOnClickListener {
-            viewModel.addIdeaItem(editTextName.text?.toString(), editTextDescription.text?.toString())
-        }
     }
 
     private fun parseIntent() {
@@ -135,12 +43,15 @@ class IdeaItemActivity: AppCompatActivity() {
         }
     }
 
-    private fun initViews() {
-        inputLayoutName = findViewById(R.id.TextInputLayout_name)
-        editTextName = findViewById(R.id.edit_text_name)
-        inputLayoutDescription = findViewById(R.id.TextInputLayout_description)
-        editTextDescription = findViewById(R.id.edit_text_description)
-        saveButton = findViewById(R.id.save_button)
+    private fun launchAppropriateMode() {
+        val fragment = when(screenMode) {
+            MODE_EDIT -> IdeaItemFragment.newInstanceEditItem(ideaItemId)
+            MODE_ADD -> IdeaItemFragment.newInstanceAddItem()
+            else -> throw RuntimeException("unknown screen mode $screenMode")
+        }
+        supportFragmentManager.beginTransaction()
+            .add(R.id.idea_item_container, fragment)
+            .commit()
     }
 
     companion object {
