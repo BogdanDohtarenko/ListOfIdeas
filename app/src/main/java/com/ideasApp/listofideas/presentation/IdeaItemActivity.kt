@@ -26,7 +26,6 @@ class IdeaItemActivity: AppCompatActivity() {
         launchAppropriateMode()
     }
 
-
     private fun parseIntent() {
         if(!intent.hasExtra(EXTRA_SCREEN_MODE)) {
             throw RuntimeException("Param screen mode is absent")
@@ -55,90 +54,6 @@ class IdeaItemActivity: AppCompatActivity() {
             .commit()
     }
 
-
-    /*
-    private fun addTextListeners() {
-        editTextName.addTextChangedListener(object: TextWatcher{
-            override fun beforeTextChanged(
-                s: CharSequence? ,
-                start: Int ,
-                count: Int ,
-                after: Int
-            ) {
-
-            }
-            override fun onTextChanged(s: CharSequence? , start: Int , before: Int , count: Int) {
-                viewModel.resetErrorInputName()
-            }
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-        })
-        editTextDescription.addTextChangedListener(object: TextWatcher{
-            override fun beforeTextChanged(
-                s: CharSequence? ,
-                start: Int ,
-                count: Int ,
-                after: Int
-            ) {
-
-            }
-            override fun onTextChanged(s: CharSequence? , start: Int , before: Int , count: Int) {
-                viewModel.resetErrorInputDescription()
-            }
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-        })
-    }
-
-    private fun addObservers() {
-        viewModel.errorInputName.observe(this) {
-            val message = if (it) {
-                getString(R.string.error_input_text)
-            } else {
-                null
-            }
-            inputLayoutName.error = message
-        }
-        viewModel.errorInputDescription.observe(this) {
-            val message = if (it) {
-                getString(R.string.error_input_description)
-            } else {
-                null
-            }
-            inputLayoutDescription.error = message
-        }
-        viewModel.exitEnabled.observe(this) {
-            finish()
-        }
-    }
-
-    private fun launchEditMode() {
-        viewModel.getIdeaItemUseCase(ideaItemId)
-        viewModel.ideaItem.observe(this) {
-            editTextName.setText(it.ideaName)
-            editTextDescription.setText(it.description)
-        }
-        saveButton.setOnClickListener {
-            viewModel.editIdeaItem(editTextName.text?.toString(), editTextDescription.text?.toString())
-        }
-    }
-
-    private fun launchAddMode() {
-        saveButton.setOnClickListener {
-            viewModel.addIdeaItem(editTextName.text?.toString(), editTextDescription.text?.toString())
-        }
-    }
-
-    private fun initViews() {
-        inputLayoutName = findViewById(R.id.TextInputLayout_name)
-        editTextName = findViewById(R.id.edit_text_name)
-        inputLayoutDescription = findViewById(R.id.TextInputLayout_description)
-        editTextDescription = findViewById(R.id.edit_text_description)
-        saveButton = findViewById(R.id.save_button)
-    }
-*/
     companion object {
         private const val EXTRA_SCREEN_MODE = "extra_mode"
         private const val EXTRA_ITEM_ID = "item_id"
