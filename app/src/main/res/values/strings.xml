@@ -8,4 +8,6 @@
 
     <string name="error_input_text">Enter smth</string>
     <string name="error_input_description">Enter smth</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
