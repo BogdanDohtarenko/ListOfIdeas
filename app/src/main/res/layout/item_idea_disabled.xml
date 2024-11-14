@@ -36,6 +36,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:layout_gravity="end"
             tools:text="desription desription desription"
             android:maxWidth= "200dp"
             android:maxHeight="22dp"/>

@@ -23,7 +23,9 @@ class IdeaItemActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_idea_item)
         parseIntent()
-        launchAppropriateMode()
+        if (savedInstanceState == null) {
+            launchAppropriateMode()
+        }
     }
 
     private fun parseIntent() {
