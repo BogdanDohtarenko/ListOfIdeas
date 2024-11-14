@@ -73,9 +73,14 @@ class MainActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(rvIdeaList)
     }
 
+    private fun isLandscapeOrientation(): Boolean {
+        return ideaItemContainer != null
+    }
+
     private fun setUpOnClickListener() {
+        val landscapeOrientation = isLandscapeOrientation()
         ideaListAdapter.onIdeaItemClickListener = {
-            if (ideaItemContainer != null) {
+            if (landscapeOrientation) {
                 launchIdeaItemFragmentEditItemMode(it.id)
             } else {
                 startActivity(IdeaItemActivity.newIntentEditItem(this , it.id))
@@ -91,8 +96,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setOnSaveButtonClickListener() {
         val addIdeaItemButton = findViewById<FloatingActionButton>(R.id.button_add_idea_item)
+        val landscapeOrientation = isLandscapeOrientation()
         addIdeaItemButton.setOnClickListener {
-            if (ideaItemContainer != null) {
+            if (landscapeOrientation) {
                 launchIdeaItemFragmentAddItemMode()
             } else {
                 startActivity(IdeaItemActivity.newIntentAddItem(this))
@@ -102,15 +108,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun launchIdeaItemFragmentEditItemMode(ideaItemId: Int) {
         val fragment = IdeaItemFragment.newInstanceEditItem(ideaItemId)
+        supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
-            .add(R.id.idea_item_container, fragment)
+            .replace(R.id.idea_item_container, fragment)
+            .addToBackStack(null)
             .commit()
     }
 
     private fun launchIdeaItemFragmentAddItemMode() {
         val fragment = IdeaItemFragment.newInstanceAddItem()
+        supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
-            .add(R.id.idea_item_container, fragment)
+            .replace(R.id.idea_item_container, fragment)
+            .addToBackStack(null)
             .commit()
     }
 
