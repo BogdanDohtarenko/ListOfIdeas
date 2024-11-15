@@ -1,6 +1,7 @@
 package com.ideasApp.listofideas.presentation
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 import androidx.fragment.app.FragmentContainerView
@@ -12,7 +13,7 @@ import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IdeaItemFragment.OnEditingItem {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var ideaListAdapter: IdeaListAdapter
@@ -28,7 +29,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.ideaList.observe(this) {
             ideaListAdapter.submitList(it)
         }
-        setOnSaveButtonClickListener()
+        setOnAddButtonClickListener()
+    }
+
+    override fun onEditingFinished() {
+        supportFragmentManager.popBackStack()
     }
 
     private fun setupRecyclerView() {
@@ -81,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         val landscapeOrientation = isLandscapeOrientation()
         ideaListAdapter.onIdeaItemClickListener = {
             if (landscapeOrientation) {
-                launchIdeaItemFragmentEditItemMode(it.id)
+                launchIdeaItemFragmentEditMode(it.id)
             } else {
                 startActivity(IdeaItemActivity.newIntentEditItem(this , it.id))
             }
@@ -94,30 +99,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setOnSaveButtonClickListener() {
+    private fun setOnAddButtonClickListener() {
         val addIdeaItemButton = findViewById<FloatingActionButton>(R.id.button_add_idea_item)
         val landscapeOrientation = isLandscapeOrientation()
         addIdeaItemButton.setOnClickListener {
             if (landscapeOrientation) {
-                launchIdeaItemFragmentAddItemMode()
+                launchIdeaItemFragmentAddMode()
             } else {
                 startActivity(IdeaItemActivity.newIntentAddItem(this))
             }
         }
     }
 
-    private fun launchIdeaItemFragmentEditItemMode(ideaItemId: Int) {
+    private fun launchIdeaItemFragmentEditMode(ideaItemId: Int) {
         val fragment = IdeaItemFragment.newInstanceEditItem(ideaItemId)
-        supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
             .replace(R.id.idea_item_container, fragment)
             .addToBackStack(null)
             .commit()
     }
 
-    private fun launchIdeaItemFragmentAddItemMode() {
+    private fun launchIdeaItemFragmentAddMode() {
         val fragment = IdeaItemFragment.newInstanceAddItem()
-        supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
             .replace(R.id.idea_item_container, fragment)
             .addToBackStack(null)
