@@ -13,7 +13,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
 
-class IdeaItemActivity: AppCompatActivity() {
+class IdeaItemActivity: AppCompatActivity(), IdeaItemFragment.OnEditingItem {
 
 
     private var screenMode = UNDEFINED_SCREEN_MODE
@@ -76,6 +76,10 @@ class IdeaItemActivity: AppCompatActivity() {
             intent.putExtra(EXTRA_ITEM_ID, ideaItemId)
             return intent
         }
+    }
+
+    override fun onEditingFinished() {
+        finish()
     }
 
 }
