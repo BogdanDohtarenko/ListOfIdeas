@@ -84,11 +84,11 @@ class IdeaItemViewModel: ViewModel() {
         _exitEnabled.value = Unit
     }
 
-    public fun resetErrorInputName() {
+    fun resetErrorInputName() {
         _errorInputName.value = false
     }
 
-    public fun resetErrorInputDescription() {
+    fun resetErrorInputDescription() {
         _errorInputDescription.value = false
     }
 }
