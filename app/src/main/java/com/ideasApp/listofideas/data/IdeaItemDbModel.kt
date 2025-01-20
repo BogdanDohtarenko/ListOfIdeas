@@ -5,10 +5,10 @@ import androidx.room.PrimaryKey
 import com.ideasApp.listofideas.domain.IdeaItem.Companion.UNDEFINED_ID
 
 @Entity(tableName = "IdeaItems")
-data class IdeaItem(
+data class IdeaItemDbModel(
     @PrimaryKey(autoGenerate = true)
+    val id: Int,
     var ideaName: String ,
     var description: String ,
     var isEnabled: Boolean ,
-    var id: Int = UNDEFINED_ID
-)
+) {}
