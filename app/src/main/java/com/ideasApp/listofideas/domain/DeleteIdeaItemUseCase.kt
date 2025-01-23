@@ -4,7 +4,7 @@ class DeleteIdeaItemUseCase(
     private val ideaListRepository: IdeaListRepository
 ) {
 
-    fun deleteIdeaItem(ideaItem: IdeaItem) {
+    suspend fun deleteIdeaItem(ideaItem: IdeaItem) {
         ideaListRepository.deleteIdeaItem(ideaItem)
     }
 }

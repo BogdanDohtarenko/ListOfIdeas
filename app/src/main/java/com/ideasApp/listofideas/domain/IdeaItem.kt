@@ -1,7 +1,6 @@
 package com.ideasApp.listofideas.domain
 
 data class IdeaItem(
-
     var ideaName: String ,
     var description: String ,
     var isEnabled: Boolean ,
@@ -9,6 +8,6 @@ data class IdeaItem(
 
 ) {
     companion object {
-        const val UNDEFINED_ID = -1
+        const val UNDEFINED_ID = 0
     }
 }
