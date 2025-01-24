@@ -1,16 +1,21 @@
 package com.ideasApp.listofideas.presentation
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.ideasApp.listofideas.data.IdeaListRepositoryImpl
 import com.ideasApp.listofideas.domain.DeleteIdeaItemUseCase
 import com.ideasApp.listofideas.domain.EditIdeaItemUseCase
 import com.ideasApp.listofideas.domain.GetIdeasListUseCase
 import com.ideasApp.listofideas.domain.IdeaItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
-class MainViewModel: ViewModel() {
+class MainViewModel(application : Application): AndroidViewModel(application) {
 
-    private var repository = IdeaListRepositoryImpl
+    private var repository = IdeaListRepositoryImpl(application)
 
     private val getIdeasListUseCase = GetIdeasListUseCase(repository)
     private val deleteIdeaItemUseCase  = DeleteIdeaItemUseCase(repository)
@@ -19,12 +24,15 @@ class MainViewModel: ViewModel() {
     val ideaList = getIdeasListUseCase.getIdeasList()
 
     fun deleteIdeaItem(ideaItem: IdeaItem) {
-        deleteIdeaItemUseCase.deleteIdeaItem(ideaItem)
+        viewModelScope.launch {
+            deleteIdeaItemUseCase.deleteIdeaItem(ideaItem)
+        }
     }
 
     fun changeEnableState(ideaItem: IdeaItem) {
-        val newItem = ideaItem.copy(isEnabled = !ideaItem.isEnabled)
-        editIdeaItemUseCase.editIdeaItem(newItem)
+        viewModelScope.launch {
+            val newItem = ideaItem.copy(isEnabled = !ideaItem.isEnabled)
+            editIdeaItemUseCase.editIdeaItem(newItem)
+        }
     }
-
 }

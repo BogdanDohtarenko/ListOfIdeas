@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 
 interface IdeaListRepository {
 
-    fun addIdeaItem(ideaItem: IdeaItem)
+    suspend fun addIdeaItem(ideaItem: IdeaItem)
 
-    fun deleteIdeaItem(ideaItem: IdeaItem)
+    suspend fun deleteIdeaItem(ideaItem: IdeaItem)
 
-    fun editIdeaItem(ideaItem: IdeaItem)
+    suspend fun editIdeaItem(ideaItem: IdeaItem)
 
-    fun getIdeaItem(ideaItemId: Int):IdeaItem
+    suspend fun getIdeaItem(ideaItemId: Int):IdeaItem
 
     fun getIdeasList(): LiveData<List<IdeaItem>>
 }
