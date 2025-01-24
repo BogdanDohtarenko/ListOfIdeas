@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.ideasApp.listofideas.data.IdeaListRepositoryImpl
 import com.ideasApp.listofideas.domain.AddIdeaItemUseCase
 import com.ideasApp.listofideas.domain.EditIdeaItemUseCase
@@ -38,17 +39,14 @@ class IdeaItemViewModel(application : Application): AndroidViewModel(application
     val exitEnabled: LiveData<Unit>
         get() = _exitEnabled
 
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
-
-
     fun getIdeaItemUseCase(id: Int) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             _ideaItem.value = getIdeaItemUseCase.getIdeaItem(id)
         }
     }
 
     fun addIdeaItem(inputName: String?, inputDescription: String?) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             val name = parseName(inputName)
             val description = parseName(inputDescription)
             val inputValid = validateInput(name , description)
@@ -61,7 +59,7 @@ class IdeaItemViewModel(application : Application): AndroidViewModel(application
     }
 
     fun editIdeaItem(inputName: String?, inputDescription: String?){
-        coroutineScope.launch {
+        viewModelScope.launch {
             val name = parseName(inputName)
             val description = parseName(inputDescription)
             val inputValid = validateInput(name , description)
@@ -103,10 +101,5 @@ class IdeaItemViewModel(application : Application): AndroidViewModel(application
 
     fun resetErrorInputDescription() {
         _errorInputDescription.value = false
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        coroutineScope.cancel()
     }
 }

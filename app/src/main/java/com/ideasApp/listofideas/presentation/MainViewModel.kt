@@ -2,6 +2,7 @@ package com.ideasApp.listofideas.presentation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.ideasApp.listofideas.data.IdeaListRepositoryImpl
 import com.ideasApp.listofideas.domain.DeleteIdeaItemUseCase
 import com.ideasApp.listofideas.domain.EditIdeaItemUseCase
@@ -21,23 +22,17 @@ class MainViewModel(application : Application): AndroidViewModel(application) {
     private val editIdeaItemUseCase = EditIdeaItemUseCase(repository)
 
     val ideaList = getIdeasListUseCase.getIdeasList()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     fun deleteIdeaItem(ideaItem: IdeaItem) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             deleteIdeaItemUseCase.deleteIdeaItem(ideaItem)
         }
     }
 
     fun changeEnableState(ideaItem: IdeaItem) {
-        coroutineScope.launch {
+        viewModelScope.launch {
             val newItem = ideaItem.copy(isEnabled = !ideaItem.isEnabled)
             editIdeaItemUseCase.editIdeaItem(newItem)
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        coroutineScope.cancel()
     }
 }
