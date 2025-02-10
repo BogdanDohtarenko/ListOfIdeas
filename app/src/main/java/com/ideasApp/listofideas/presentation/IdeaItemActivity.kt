@@ -3,18 +3,11 @@ package com.ideasApp.listofideas.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
 
 class IdeaItemActivity: AppCompatActivity(), IdeaItemFragment.OnEditingItem {
-
 
     private var screenMode = UNDEFINED_SCREEN_MODE
     private var ideaItemId = IdeaItem.UNDEFINED_ID

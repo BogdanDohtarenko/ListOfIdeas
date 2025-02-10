@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    ksp(libs.dagger.compiler)
+    implementation(libs.dagger)
     ksp(libs.room.compiler)
     implementation(libs.room)
     implementation(libs.viewModel)

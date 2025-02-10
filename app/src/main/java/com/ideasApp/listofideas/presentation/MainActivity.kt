@@ -11,21 +11,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), IdeaItemFragment.OnEditingItem {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var ideaListAdapter: IdeaListAdapter
+
+    @Inject
+    lateinit var ideaListAdapter: IdeaListAdapter
+    @Inject
+    lateinit var ideaListViewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (application as IdeaApplication).component
+    }
 
     private var ideaItemContainer: FragmentContainerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ideaItemContainer = findViewById(R.id.idea_item_container)
         setupRecyclerView()
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, ideaListViewModelFactory)[MainViewModel::class.java]
         viewModel.ideaList.observe(this) {
             ideaListAdapter.submitList(it)
         }
