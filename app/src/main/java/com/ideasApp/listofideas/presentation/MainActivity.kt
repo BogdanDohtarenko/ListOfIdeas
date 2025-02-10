@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(), IdeaItemFragment.OnEditingItem {
 
     @Inject
     lateinit var ideaListAdapter: IdeaListAdapter
-
     @Inject
     lateinit var ideaListViewModelFactory: ViewModelFactory
 

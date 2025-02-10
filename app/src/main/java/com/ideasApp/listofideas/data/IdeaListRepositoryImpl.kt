@@ -5,9 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.ideasApp.listofideas.domain.IdeaItem
 import com.ideasApp.listofideas.domain.IdeaListRepository
+import javax.inject.Inject
 import kotlin.random.Random
 
-class IdeaListRepositoryImpl(application : Application): IdeaListRepository {
+class IdeaListRepositoryImpl @Inject constructor(application : Application): IdeaListRepository {
 
     private val ideaListDao = AppDatabase.getInstance(application).IdeaListDao()
 

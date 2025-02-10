@@ -1,6 +1,8 @@
 package com.ideasApp.listofideas.domain
 
-class EditIdeaItemUseCase(
+import javax.inject.Inject
+
+class EditIdeaItemUseCase @Inject constructor(
     private val ideaListRepository: IdeaListRepository
 ) {
     suspend fun editIdeaItem(ideaItem: IdeaItem) {

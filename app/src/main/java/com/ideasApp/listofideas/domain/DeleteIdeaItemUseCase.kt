@@ -1,6 +1,8 @@
 package com.ideasApp.listofideas.domain
 
-class DeleteIdeaItemUseCase(
+import javax.inject.Inject
+
+class DeleteIdeaItemUseCase @Inject constructor(
     private val ideaListRepository: IdeaListRepository
 ) {
 

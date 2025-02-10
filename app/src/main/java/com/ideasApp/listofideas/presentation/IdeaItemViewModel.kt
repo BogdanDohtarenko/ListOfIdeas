@@ -1,27 +1,21 @@
 package com.ideasApp.listofideas.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ideasApp.listofideas.data.IdeaListRepositoryImpl
 import com.ideasApp.listofideas.domain.AddIdeaItemUseCase
 import com.ideasApp.listofideas.domain.EditIdeaItemUseCase
 import com.ideasApp.listofideas.domain.GetIdeaItemUseCase
 import com.ideasApp.listofideas.domain.IdeaItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class IdeaItemViewModel(application : Application): AndroidViewModel(application) {
-
-    private var repository = IdeaListRepositoryImpl(application)
-
-    private val getIdeaItemUseCase = GetIdeaItemUseCase(repository)
-    private val addIdeaItemUseCase = AddIdeaItemUseCase(repository)
-    private val editIdeaItemUseCase = EditIdeaItemUseCase(repository)
+class IdeaItemViewModel @Inject constructor(
+    private val getIdeaItemUseCase: GetIdeaItemUseCase,
+    private val addIdeaItemUseCase: AddIdeaItemUseCase,
+    private val editIdeaItemUseCase: EditIdeaItemUseCase,
+): ViewModel() {
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>
