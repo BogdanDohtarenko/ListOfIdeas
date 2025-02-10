@@ -15,9 +15,17 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
+import javax.inject.Inject
 
 
-class IdeaItemFragment: Fragment() {
+class IdeaItemFragment @Inject constructor(): Fragment() {
+
+    private val component by lazy {
+        (requireActivity().application as IdeaApplication).component
+    }
+
+    @Inject
+    lateinit var ideaListViewModelFactory: ViewModelFactory
 
     private lateinit var onEditingItem: OnEditingItem
     private lateinit var viewModel: IdeaItemViewModel
@@ -32,6 +40,7 @@ class IdeaItemFragment: Fragment() {
     private var ideaItemId: Int = IdeaItem.UNDEFINED_ID
 
     override fun onAttach(context: Context) {
+        component.inject(this)
         super.onAttach(context)
         Log.d("IdeaItemFragment", "onAttach")
         if (context is OnEditingItem)
@@ -58,7 +67,7 @@ class IdeaItemFragment: Fragment() {
     override fun onViewCreated(view: View , savedInstanceState: Bundle?) {
         super.onViewCreated(view , savedInstanceState)
         Log.d("IdeaItemFragment", "onViewCreated")
-        viewModel = ViewModelProvider(this)[IdeaItemViewModel::class.java]
+        viewModel = ViewModelProvider(this, ideaListViewModelFactory)[IdeaItemViewModel::class.java]
         initViews(view)
         addTextListeners()
         launchAppropriateMode()

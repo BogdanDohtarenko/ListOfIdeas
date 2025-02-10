@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
+import javax.inject.Inject
 
-class IdeaListAdapter: ListAdapter<IdeaItem, IdeaItemViewHolder>(IdeaItemDiffItemCallback()) {
+class IdeaListAdapter @Inject constructor(): ListAdapter<IdeaItem, IdeaItemViewHolder>(IdeaItemDiffItemCallback()) {
 
     companion object {
         const val VIEW_TYPE_ENABLED = 0
