@@ -8,9 +8,10 @@ import com.ideasApp.listofideas.domain.IdeaListRepository
 import javax.inject.Inject
 import kotlin.random.Random
 
-class IdeaListRepositoryImpl @Inject constructor(application : Application): IdeaListRepository {
-
-    private val ideaListDao = AppDatabase.getInstance(application).IdeaListDao()
+class IdeaListRepositoryImpl @Inject constructor(
+    application : Application,
+    private val ideaListDao: IdeaListDao
+): IdeaListRepository {
 
     override suspend fun addIdeaItem(ideaItem: IdeaItem) {
         ideaListDao.addIdeaItem(IdeaListMapper.mapEntityToDbModel(ideaItem))
