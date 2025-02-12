@@ -14,11 +14,11 @@ interface IdeaListDao {
     fun getIdeaList(): LiveData<List<IdeaItemDbModel>>
 
     @Query("SELECT * FROM IdeaItems WHERE id = :ideaItemId LIMIT 1")
-    fun getIdeaItem(ideaItemId : Int): IdeaItemDbModel
+    suspend fun getIdeaItem(ideaItemId : Int): IdeaItemDbModel
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addIdeaItem(ideaItemDbModel : IdeaItemDbModel)
+    suspend fun addIdeaItem(ideaItemDbModel : IdeaItemDbModel)
 
     @Query("DELETE FROM IdeaItems WHERE id = :ideaItemId")
-    fun deleteIdeaItem(ideaItemId : Int)
+    suspend fun deleteIdeaItem(ideaItemId : Int)
 }

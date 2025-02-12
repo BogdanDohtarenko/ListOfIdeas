@@ -9,7 +9,6 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 class IdeaListRepositoryImpl @Inject constructor(
-    application : Application,
     private val ideaListDao: IdeaListDao
 ): IdeaListRepository {
 
@@ -35,6 +34,4 @@ class IdeaListRepositoryImpl @Inject constructor(
             value = IdeaListMapper.mapListDbModelToListEntity(it)
         }
     }
-
-
 }
