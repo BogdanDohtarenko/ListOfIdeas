@@ -69,7 +69,13 @@ class IdeaListProvider: ContentProvider() {
     }
 
     override fun delete(uri:Uri,selection:String?,selectionArgs:Array<out String>?):Int {
-        TODO("Not yet implemented")
+        when(uriMatcher.match(uri)) {
+            IDEA_LIST_QUERY-> {
+                val id = selectionArgs?.get(0)?.toInt() ?: -1
+                return ideaListDao.deleteIdeaItemSync(id)
+            }
+        }
+        return 0
     }
 
     override fun update(uri:Uri,values:ContentValues?,selection:String?,selectionArgs:Array<out String>?):Int {

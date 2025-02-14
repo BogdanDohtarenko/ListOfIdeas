@@ -28,4 +28,7 @@ interface IdeaListDao {
 
     @Query("DELETE FROM IdeaItems WHERE id = :ideaItemId")
     suspend fun deleteIdeaItem(ideaItemId : Int)
+
+    @Query("DELETE FROM IdeaItems WHERE id = :ideaItemId")
+    fun deleteIdeaItemSync(ideaItemId : Int): Int
 }
