@@ -79,7 +79,21 @@ class IdeaListProvider: ContentProvider() {
     }
 
     override fun update(uri:Uri,values:ContentValues?,selection:String?,selectionArgs:Array<out String>?):Int {
-        TODO("Not yet implemented")
+        when(uriMatcher.match(uri)) {
+            IDEA_LIST_QUERY-> {
+                var id = selectionArgs?.get(0)?.toInt() ?: -1
+                ideaListDao.deleteIdeaItemSync(id)
+                if(values == null) return 0
+                val ideaName = values.getAsString("ideaName")
+                val description = values.getAsString("description")
+                val isEnabled = values.getAsBoolean("isEnabled")
+                id = values.getAsInteger("id")
+                val ideaItem = IdeaItem(ideaName, description, isEnabled, id)
+                val dbModel = mapper.mapEntityToDbModel(ideaItem)
+                return ideaListDao.addIdeaItemSync(dbModel)
+            }
+        }
+        return 0
     }
 
     companion object {
