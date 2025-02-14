@@ -23,6 +23,9 @@ interface IdeaListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addIdeaItem(ideaItemDbModel : IdeaItemDbModel)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addIdeaItemSync(ideaItemDbModel : IdeaItemDbModel)
+
     @Query("DELETE FROM IdeaItems WHERE id = :ideaItemId")
     suspend fun deleteIdeaItem(ideaItemId : Int)
 }

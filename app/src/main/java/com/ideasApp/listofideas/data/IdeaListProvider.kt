@@ -6,6 +6,7 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
 import android.util.Log
+import com.ideasApp.listofideas.domain.IdeaItem
 import com.ideasApp.listofideas.presentation.IdeaApplication
 import javax.inject.Inject
 
@@ -13,6 +14,8 @@ class IdeaListProvider: ContentProvider() {
 
     @Inject
     lateinit var ideaListDao: IdeaListDao
+    @Inject
+    lateinit var mapper: IdeaListMapper
 
     private val component by lazy {
         (context as IdeaApplication).component
@@ -50,7 +53,19 @@ class IdeaListProvider: ContentProvider() {
     }
 
     override fun insert(uri:Uri,values:ContentValues?):Uri? {
-        TODO("Not yet implemented")
+        when(uriMatcher.match(uri)) {
+            IDEA_LIST_QUERY-> {
+                if(values == null) return null
+                val ideaName = values.getAsString("ideaName")
+                val description = values.getAsString("description")
+                val isEnabled = values.getAsBoolean("isEnabled")
+                val id = values.getAsInteger("id")
+                val ideaItem = IdeaItem(ideaName, description, isEnabled, id)
+                val dbModel = mapper.mapEntityToDbModel(ideaItem)
+                ideaListDao.addIdeaItemSync(dbModel)
+            }
+        }
+        return null
     }
 
     override fun delete(uri:Uri,selection:String?,selectionArgs:Array<out String>?):Int {
