@@ -1,5 +1,6 @@
 package com.ideasApp.listofideas.data
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Index
@@ -12,6 +13,9 @@ import com.ideasApp.listofideas.data.AppDatabase.Companion.DATABASE_NAME
 interface IdeaListDao {
     @Query("SELECT * FROM IdeaItems")
     fun getIdeaList(): LiveData<List<IdeaItemDbModel>>
+
+    @Query("SELECT * FROM IdeaItems")
+    fun getIdeaListCursor(): Cursor
 
     @Query("SELECT * FROM IdeaItems WHERE id = :ideaItemId LIMIT 1")
     suspend fun getIdeaItem(ideaItemId : Int): IdeaItemDbModel

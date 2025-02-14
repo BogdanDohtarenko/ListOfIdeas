@@ -1,6 +1,8 @@
 package com.ideasApp.listofideas.presentation
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -8,10 +10,12 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.util.getColumnIndex
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.ideasApp.listofideas.R
 import com.ideasApp.listofideas.domain.IdeaItem
 import javax.inject.Inject
+import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity(), IdeaItemFragment.OnEditingItem {
@@ -33,13 +37,40 @@ class MainActivity : AppCompatActivity(), IdeaItemFragment.OnEditingItem {
         component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ideaItemContainer = findViewById(R.id.idea_item_container)
-        setupRecyclerView()
-        viewModel = ViewModelProvider(this, ideaListViewModelFactory)[MainViewModel::class.java]
+
+        setupContainerAndRecyclerView()
+        setupViewModelAndObservers()
+        setOnAddButtonClickListener()
+        thread {
+            val cursor = contentResolver.query(
+                Uri.parse("content://com.ideasApp.listofideas/IdeaItems"),
+                null,
+                null,
+                null,
+                null,
+                null,
+            )
+            while (cursor?.moveToNext() == true) {
+                val ideaName = cursor.getString(cursor.getColumnIndexOrThrow("ideaName"))
+                val description = cursor.getString(cursor.getColumnIndexOrThrow("description"))
+                val isEnabled = cursor.getInt(cursor.getColumnIndexOrThrow("isEnabled")) > 0
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                val ideaItem = IdeaItem(ideaName, description, isEnabled, id)
+                Log.d("IdeaListProvider", ideaItem.toString())
+            }
+        }
+    }
+
+    private fun setupViewModelAndObservers() {
+        viewModel=ViewModelProvider(this,ideaListViewModelFactory)[MainViewModel::class.java]
         viewModel.ideaList.observe(this) {
             ideaListAdapter.submitList(it)
         }
-        setOnAddButtonClickListener()
+    }
+
+    private fun setupContainerAndRecyclerView() {
+        ideaItemContainer=findViewById(R.id.idea_item_container)
+        setupRecyclerView()
     }
 
     override fun onEditingFinished() {
