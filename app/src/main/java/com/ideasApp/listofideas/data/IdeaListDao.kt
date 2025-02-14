@@ -1,5 +1,6 @@
 package com.ideasApp.listofideas.data
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Index
@@ -13,12 +14,21 @@ interface IdeaListDao {
     @Query("SELECT * FROM IdeaItems")
     fun getIdeaList(): LiveData<List<IdeaItemDbModel>>
 
+    @Query("SELECT * FROM IdeaItems")
+    fun getIdeaListCursor(): Cursor
+
     @Query("SELECT * FROM IdeaItems WHERE id = :ideaItemId LIMIT 1")
-    fun getIdeaItem(ideaItemId : Int): IdeaItemDbModel
+    suspend fun getIdeaItem(ideaItemId : Int): IdeaItemDbModel
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addIdeaItem(ideaItemDbModel : IdeaItemDbModel)
+    suspend fun addIdeaItem(ideaItemDbModel : IdeaItemDbModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addIdeaItemSync(ideaItemDbModel : IdeaItemDbModel): Int
 
     @Query("DELETE FROM IdeaItems WHERE id = :ideaItemId")
-    fun deleteIdeaItem(ideaItemId : Int)
+    suspend fun deleteIdeaItem(ideaItemId : Int)
+
+    @Query("DELETE FROM IdeaItems WHERE id = :ideaItemId")
+    fun deleteIdeaItemSync(ideaItemId : Int): Int
 }
